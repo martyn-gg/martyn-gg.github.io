@@ -161,10 +161,12 @@ const earth=vec(P[2],T), lamSun=Math.atan2(-earth.y,-earth.x)*R2D;
 function moon(t){const Lp=218.3165+13.17639648*t,D=(297.8502+12.19074912*t)*D2R,M=(134.9634+13.06499295*t)*D2R,
   Ms=(357.5291+0.98560028*t)*D2R,F=(93.2721+13.22935024*t)*D2R,S=Math.sin;
   const lam=Lp+6.289*S(M)+1.274*S(2*D-M)+0.658*S(2*D)+0.214*S(2*M)-0.186*S(Ms)-0.114*S(2*F)-0.059*S(2*D-2*M)-0.057*S(2*D-M-Ms);
-  const e=vec(P[2],t),ls=Math.atan2(-e.y,-e.x)*R2D,el=((lam-ls)%360+360)%360;
+  /* the lunar theory counts from the equinox of date, the Sun from J2000:
+     carry the Sun forward by precession before comparing, as the orrery does */
+  const e=vec(P[2],t),ls=Math.atan2(-e.y,-e.x)*R2D+50.29/3600*t/365.25,el=((lam-ls)%360+360)%360;
   return {lam:((lam%360)+360)%360,el:el,lit:(1-Math.cos(el*D2R))/2,age:el/360*29.530589};}
-const PH=[[22.5,"New Moon"],[67.5,"Waxing crescent"],[112.5,"First quarter"],[157.5,"Waxing gibbous"],
-  [202.5,"Full Moon"],[247.5,"Waning gibbous"],[292.5,"Last quarter"],[337.5,"Waning crescent"],[360.1,"New Moon"]];
+const PH=[[22.5,"New Moon"],[67.5,"Waxing crescent"],[112.5,"First Quarter"],[157.5,"Waxing gibbous"],
+  [202.5,"Full Moon"],[247.5,"Waning gibbous"],[292.5,"Last Quarter"],[337.5,"Waning crescent"],[360.1,"New Moon"]];
 const m=moon(T), name=PH.find(p=>m.el<p[0])[1];
 const NS="http://www.w3.org/2000/svg";
 const mk=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
@@ -229,7 +231,7 @@ P.forEach(b=>{
     for(let k=0;k<8&&!box;k++){const an=Math.atan2(uy,ux)+[0,1,-1,2,-2,3,-3,4][k]*Math.PI/4;
       const c=put(x+Math.cos(an)*g,y+Math.sin(an)*g); if(inside(c)) box=c;}
   }
-  placed.push(box);
+  if(box) placed.push(box);
   /* the dots themselves are obstacles for later labels */
 });
 })();
