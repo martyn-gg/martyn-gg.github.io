@@ -36,6 +36,10 @@
   dl.sky dt{color:var(--muted)}
   dl.sky dd{margin:0;color:#c3cae0}
   dl.sky .con{color:var(--muted)}
+  /* each planet and the Moon opens the orrery on it */
+  .tonight a,.plan a{color:inherit;text-decoration:none}
+  .tonight a:hover,.tonight a:focus-visible{color:var(--accent);text-decoration:underline}
+  .plan a:hover text,.plan a:focus-visible text{fill:var(--accent)}
   .plan{display:block;width:100%;height:auto}
   .plan text{font-family:var(--sans);font-size:10.5px;fill:#aab2d0;paint-order:stroke;
     stroke:var(--bg);stroke-width:3px;stroke-linejoin:round}
@@ -87,7 +91,7 @@
         aria-label="The eight planets around the Sun in their positions today, seen from the north."></svg>
       <p class="plancap">Today's positions, seen from the north, so the planets travel
       anticlockwise. Distances are on a log scale. Worked out in your browser with
-      <a href="/orrery/">the orrery</a>'s own code.</p>
+      <a href="/orrery/">the orrery</a>'s own code. Tap a planet to open it there.</p>
     </div>
   </div>
 
@@ -169,7 +173,7 @@ const r=44,rx=r*Math.abs(Math.cos(m.el*D2R)),so=m.el<180?1:0,si=m.lit>0.5?so:1-s
 ms.appendChild(mk("circle",{r:r,fill:"#14192e",stroke:"#2a3358","stroke-width":1}));
 ms.appendChild(mk("path",{d:"M0,"+(-r)+" A"+r+","+r+" 0 0 "+so+" 0,"+r+" A"+rx.toFixed(2)+","+r+" 0 0 "+si+" 0,"+(-r)+" Z",fill:"#e6e9f2"}));
 document.getElementById("moonpic").appendChild(ms);
-document.getElementById("moontext").innerHTML="<b>"+name+"</b>, "+Math.round(m.lit*100)+
+document.getElementById("moontext").innerHTML="<b><a href='/orrery/#tab=moon'>"+name+"</a></b>, "+Math.round(m.lit*100)+
   "% lit, in "+constellation(m.lam)+". "+m.age.toFixed(1)+" days since new moon.";
 document.getElementById("tonight-when").textContent="Tonight, "+
   new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"});
@@ -181,7 +185,7 @@ const groups={night:[],evening:[],morning:[],glare:[]};
     D=Math.hypot(dx,dy,dz), sr=Math.hypot(earth.x,earth.y,earth.z),
     el=Math.acos(Math.max(-1,Math.min(1,(-dx*earth.x-dy*earth.y-dz*earth.z)/(D*sr))))*R2D,
     lam=Math.atan2(dy,dx)*R2D, east=((lam-lamSun)%360+360)%360<180,
-    txt=n+" <span class='con'>in "+constellation(lam)+"</span>";
+    txt="<a href='/orrery/#body="+n.toLowerCase()+"'>"+n+"</a> <span class='con'>in "+constellation(lam)+"</span>";
   (el<10?groups.glare:el>150?groups.night:east?groups.evening:groups.morning).push(txt);});
 const list=document.getElementById("skylist");
 [["Up all night","night"],["Evening sky","evening"],["Morning sky","morning"],["Too near the Sun","glare"]]
@@ -200,14 +204,15 @@ placed.push([-17,-17,34,34]);  /* the Sun */
 P.forEach(b=>{
   const p=vec(b,T), R=rad(b[2]), th=Math.atan2(p.y,p.x), x=R*Math.cos(th), y=-R*Math.sin(th);
   plan.appendChild(mk("circle",{class:"ring",r:R.toFixed(1)}));
+  const link=mk("a",{href:"/orrery/#body="+b[0].toLowerCase()}); plan.appendChild(link);
   const dot=mk("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:b[0]==="Earth"?4:3.6,fill:b[1]});
   const tl=mk("title",{}); tl.textContent=b[0]; dot.appendChild(tl);
-  plan.appendChild(dot);
-  if(b[0]==="Earth") plan.appendChild(mk("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:7.5,fill:"none",stroke:"#7fc7ff","stroke-width":1}));
+  link.appendChild(dot);
+  if(b[0]==="Earth") link.appendChild(mk("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:7.5,fill:"none",stroke:"#7fc7ff","stroke-width":1}));
   /* label beside the dot, on the first side where it overlaps nothing
      already placed and stays inside the frame; measured, not estimated */
   const ux=Math.cos(th), uy=-Math.sin(th), g=b[0]==="Earth"?12:9;
-  const t=mk("text",{}); t.textContent=b[0]; plan.appendChild(t);
+  const t=mk("text",{}); t.textContent=b[0]; link.appendChild(t);
   const put=(lx,ly)=>{const anchor=lx>x+2?"start":lx<x-2?"end":"middle";
     t.setAttribute("x",lx.toFixed(1)); t.setAttribute("y",(ly+3.5).toFixed(1)); t.setAttribute("text-anchor",anchor);
     const q=t.getBBox(); return [q.x-1,q.y-1,q.width+2,q.height+2];};
