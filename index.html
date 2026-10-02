@@ -10,8 +10,9 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Martyn Greville-Giddings">
 <meta property="og:description" content="Things I make in my spare time.">
-<meta property="og:url" content="https://martyn-gg.github.io/">
-<meta property="og:image" content="https://martyn-gg.github.io/orrery/og-image.png">
+<meta property="og:url" content="https://greville-giddings.me/">
+<meta property="og:image" content="https://greville-giddings.me/orrery/og-image.png">
+<link rel="canonical" href="https://greville-giddings.me/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2305060d'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='Georgia,serif' font-size='30' font-weight='600' fill='%23e8ebf5'%3EM%3C/text%3E%3C/svg%3E">
 <style>
   :root{--bg:#05060d;--panel:#0d1020;--line:#252a45;--ink:#e8ebf5;--muted:#8f96b3;--accent:#7fc7ff;
@@ -22,7 +23,26 @@
     -webkit-font-smoothing:antialiased}
   main{max-width:880px;margin:0 auto;padding:72px 24px 40px}
   h1{font-family:var(--serif);font-weight:600;font-size:40px;letter-spacing:.2px;margin:0 0 10px}
-  .lede{font-size:17px;line-height:1.6;color:#b9c0d8;margin:0 0 48px;max-width:58ch}
+  .lede{font-size:17px;line-height:1.6;color:#b9c0d8;margin:0;max-width:58ch}
+  /* the sky tonight: a small live piece of the orrery */
+  .hero{display:grid;grid-template-columns:1fr 300px;gap:28px 40px;align-items:center;margin-bottom:52px}
+  .tonight{margin-top:28px;border-top:1px solid var(--line);padding-top:18px}
+  .tonight .when{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin:0 0 12px}
+  .moonline{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+  .moonline svg{flex:0 0 auto}
+  .moonline p{margin:0;font-size:15px;line-height:1.5;color:#c3cae0}
+  .moonline b{color:var(--ink);font-weight:600}
+  dl.sky{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-size:14.5px;line-height:1.45}
+  dl.sky dt{color:var(--muted)}
+  dl.sky dd{margin:0;color:#c3cae0}
+  dl.sky .con{color:var(--muted)}
+  .plan{display:block;width:100%;height:auto}
+  .plan text{font-family:var(--sans);font-size:10.5px;fill:#aab2d0;paint-order:stroke;
+    stroke:var(--bg);stroke-width:3px;stroke-linejoin:round}
+  .plan .ring{fill:none;stroke:#232a48;stroke-width:1}
+  .plancap{font-size:12.5px;line-height:1.5;color:var(--muted);margin:8px 0 0;text-align:center}
+  .plancap a{color:var(--accent);text-decoration:none}
+  .plancap a:hover{text-decoration:underline}
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
   a.card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);
     border-radius:14px;overflow:hidden;color:inherit;text-decoration:none;
@@ -42,7 +62,9 @@
   @media (max-width:600px){
     main{padding:44px 16px 32px}
     h1{font-size:29px}
-    .lede{font-size:16px;margin-bottom:32px}
+    .lede{font-size:16px}
+    .hero{grid-template-columns:1fr;margin-bottom:36px}
+    .figure{max-width:300px;margin:0 auto;width:100%}
     footer{padding:20px 16px 40px}
   }
   @media (prefers-reduced-motion:reduce){a.card{transition:none}a.card:hover{transform:none}}
@@ -50,8 +72,24 @@
 </head>
 <body>
 <main>
-  <h1>Martyn Greville&#8209;Giddings</h1>
-  <p class="lede">Things I make in my spare time. Each is free to use, and its source is on GitHub.</p>
+  <div class="hero">
+    <div>
+      <h1>Martyn Greville&#8209;Giddings</h1>
+      <p class="lede">Things I make in my spare time. Each is free to use, and its source is on GitHub.</p>
+      <section class="tonight" aria-labelledby="tonight-when">
+        <p class="when" id="tonight-when">Tonight</p>
+        <div class="moonline"><span id="moonpic"></span><p id="moontext"></p></div>
+        <dl class="sky" id="skylist"></dl>
+      </section>
+    </div>
+    <div class="figure">
+      <svg class="plan" id="plan" viewBox="-160 -160 320 320" role="img"
+        aria-label="The eight planets around the Sun in their positions today, seen from the north."></svg>
+      <p class="plancap">Today's positions, seen from the north, so the planets travel
+      anticlockwise. Distances are on a log scale. Worked out in your browser with
+      <a href="/orrery/">the orrery</a>'s own code.</p>
+    </div>
+  </div>
 
   <div class="cards">
     <a class="card" href="/orrery/">
@@ -62,7 +100,7 @@
         <p>The solar system on any date, computed from JPL's orbital elements. Tilt it into
         three dimensions, follow a planet through its retrograde loop, or switch to the sky
         guide to see what is up tonight, with moon phases, star charts and eclipses to 2035.</p>
-        <p class="where">martyn-gg.github.io/orrery</p>
+        <p class="where">greville-giddings.me/orrery</p>
       </div>
     </a>
 
@@ -85,5 +123,111 @@
 <footer>
   <a href="https://github.com/martyn-gg">github.com/martyn-gg</a>
 </footer>
+<script>
+/* Tonight's sky, from the same JPL elements and abridged lunar theory the
+   orrery uses. Nothing is fetched: it is all arithmetic on today's date. */
+(function(){
+const D2R=Math.PI/180,R2D=180/Math.PI,J2000=Date.UTC(2000,0,1,12,0,0);
+const T=(Date.now()-J2000)/86400000;
+const P=[
+ ["Mercury","#9c8e82",0.38709927,0.00000037,0.20563593,0.00001906,7.00497902,-0.00594749,252.25032350,149472.67411175,77.45779628,0.16047689,48.33076593,-0.12534081],
+ ["Venus","#e8c98a",0.72333566,0.00000390,0.00677672,-0.00004107,3.39467605,-0.00078890,181.97909950,58517.81538729,131.60246718,0.00268329,76.67984255,-0.27769418],
+ ["Earth","#4f92d4",1.00000261,0.00000562,0.01671123,-0.00004392,-0.00001531,-0.01294668,100.46457166,35999.37244981,102.93768193,0.32327364,0,0],
+ ["Mars","#c1502e",1.52371034,0.00001847,0.09339410,0.00007882,1.84969142,-0.00813131,-4.55343205,19140.30268499,-23.94362959,0.44441088,49.55953891,-0.29257343],
+ ["Jupiter","#d8a679",5.20288700,-0.00011607,0.04838624,-0.00013253,1.30439695,-0.00183714,34.39644051,3034.74612775,14.72847983,0.21252668,100.47390909,0.20469106],
+ ["Saturn","#e5cd9a",9.53667594,-0.00125060,0.05386179,-0.00050991,2.48599187,0.00193609,49.95424423,1222.49362201,92.59887831,-0.41897216,113.66242448,-0.28867794],
+ ["Uranus","#90d3dc",19.18916464,-0.00196176,0.04725744,-0.00004397,0.77263783,-0.00242939,313.23810451,428.48202785,170.95427630,0.40805281,74.01692503,0.04240589],
+ ["Neptune","#5a72dd",30.06992276,0.00026291,0.00859048,0.00005105,1.77004347,0.00035372,-55.12002969,218.45945325,44.96476227,-0.32241464,131.78422574,-0.00508664]];
+function kepler(M,e){M=((M%(2*Math.PI))+2*Math.PI)%(2*Math.PI);if(M>Math.PI)M-=2*Math.PI;
+  let E=M;for(let k=0;k<12;k++){const d=(E-e*Math.sin(E)-M)/(1-e*Math.cos(E));E-=d;if(Math.abs(d)<1e-11)break;}return E;}
+function vec(b,t){const c=t/36525,a=b[2]+b[3]*c,e=b[4]+b[5]*c,i=(b[6]+b[7]*c)*D2R,L=(b[8]+b[9]*c)*D2R,
+  pi=(b[10]+b[11]*c)*D2R,om=(b[12]+b[13]*c)*D2R,E=kepler(L-pi,e),r=a*(1-e*Math.cos(E)),
+  nu=2*Math.atan2(Math.sqrt(1+e)*Math.sin(E/2),Math.sqrt(1-e)*Math.cos(E/2)),u=nu+pi-om;
+  return {x:r*(Math.cos(om)*Math.cos(u)-Math.sin(om)*Math.sin(u)*Math.cos(i)),
+          y:r*(Math.sin(om)*Math.cos(u)+Math.cos(om)*Math.sin(u)*Math.cos(i)),
+          z:r*Math.sin(u)*Math.sin(i),r:r};}
+const ZOD=[[351.6,"Pisces"],[28.7,"Aries"],[53.5,"Taurus"],[90.4,"Gemini"],[118.3,"Cancer"],
+ [138.0,"Leo"],[174.0,"Virgo"],[217.8,"Libra"],[241.1,"Scorpius"],[247.7,"Ophiuchus"],
+ [266.6,"Sagittarius"],[299.7,"Capricornus"],[327.6,"Aquarius"]];
+function constellation(l){l=((l%360)+360)%360;for(let i=0;i<ZOD.length;i++){const a=ZOD[i][0],b=ZOD[(i+1)%ZOD.length][0];
+  if(a<b?(l>=a&&l<b):(l>=a||l<b))return ZOD[i][1];}return "";}
+const earth=vec(P[2],T), lamSun=Math.atan2(-earth.y,-earth.x)*R2D;
+
+/* the Moon */
+function moon(t){const Lp=218.3165+13.17639648*t,D=(297.8502+12.19074912*t)*D2R,M=(134.9634+13.06499295*t)*D2R,
+  Ms=(357.5291+0.98560028*t)*D2R,F=(93.2721+13.22935024*t)*D2R,S=Math.sin;
+  const lam=Lp+6.289*S(M)+1.274*S(2*D-M)+0.658*S(2*D)+0.214*S(2*M)-0.186*S(Ms)-0.114*S(2*F)-0.059*S(2*D-2*M)-0.057*S(2*D-M-Ms);
+  const e=vec(P[2],t),ls=Math.atan2(-e.y,-e.x)*R2D,el=((lam-ls)%360+360)%360;
+  return {lam:((lam%360)+360)%360,el:el,lit:(1-Math.cos(el*D2R))/2,age:el/360*29.530589};}
+const PH=[[22.5,"New Moon"],[67.5,"Waxing crescent"],[112.5,"First quarter"],[157.5,"Waxing gibbous"],
+  [202.5,"Full Moon"],[247.5,"Waning gibbous"],[292.5,"Last quarter"],[337.5,"Waning crescent"],[360.1,"New Moon"]];
+const m=moon(T), name=PH.find(p=>m.el<p[0])[1];
+const NS="http://www.w3.org/2000/svg";
+const mk=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const ms=mk("svg",{viewBox:"-52 -52 104 104",width:46,height:46,"aria-hidden":"true"});
+const r=44,rx=r*Math.abs(Math.cos(m.el*D2R)),so=m.el<180?1:0,si=m.lit>0.5?so:1-so;
+ms.appendChild(mk("circle",{r:r,fill:"#14192e",stroke:"#2a3358","stroke-width":1}));
+ms.appendChild(mk("path",{d:"M0,"+(-r)+" A"+r+","+r+" 0 0 "+so+" 0,"+r+" A"+rx.toFixed(2)+","+r+" 0 0 "+si+" 0,"+(-r)+" Z",fill:"#e6e9f2"}));
+document.getElementById("moonpic").appendChild(ms);
+document.getElementById("moontext").innerHTML="<b>"+name+"</b>, "+Math.round(m.lit*100)+
+  "% lit, in "+constellation(m.lam)+". "+m.age.toFixed(1)+" days since new moon.";
+document.getElementById("tonight-when").textContent="Tonight, "+
+  new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"});
+
+/* the five planets you can see without a telescope */
+const groups={night:[],evening:[],morning:[],glare:[]};
+["Mercury","Venus","Mars","Jupiter","Saturn"].forEach(n=>{
+  const b=P.find(q=>q[0]===n), p=vec(b,T), dx=p.x-earth.x, dy=p.y-earth.y, dz=p.z-earth.z,
+    D=Math.hypot(dx,dy,dz), sr=Math.hypot(earth.x,earth.y,earth.z),
+    el=Math.acos(Math.max(-1,Math.min(1,(-dx*earth.x-dy*earth.y-dz*earth.z)/(D*sr))))*R2D,
+    lam=Math.atan2(dy,dx)*R2D, east=((lam-lamSun)%360+360)%360<180,
+    txt=n+" <span class='con'>in "+constellation(lam)+"</span>";
+  (el<10?groups.glare:el>150?groups.night:east?groups.evening:groups.morning).push(txt);});
+const list=document.getElementById("skylist");
+[["Up all night","night"],["Evening sky","evening"],["Morning sky","morning"],["Too near the Sun","glare"]]
+  .forEach(([label,k])=>{if(!groups[k].length)return;
+    list.insertAdjacentHTML("beforeend","<dt>"+label+"</dt><dd>"+groups[k].join(", ")+"</dd>");});
+
+/* the plan view: heliocentric longitude, log distance */
+const plan=document.getElementById("plan");
+const rad=a=>28+100*Math.log(a/0.387)/Math.log(30.07/0.387);
+plan.appendChild(mk("circle",{r:10,fill:"#fdb813"}));
+plan.appendChild(mk("circle",{r:16,fill:"#fdb813",opacity:".18"}));
+const placed=[];
+P.forEach(b=>{const p=vec(b,T),R=rad(b[2]),th=Math.atan2(p.y,p.x);
+  placed.push([R*Math.cos(th)-5,-R*Math.sin(th)-5,10,10]);});
+placed.push([-17,-17,34,34]);  /* the Sun */
+P.forEach(b=>{
+  const p=vec(b,T), R=rad(b[2]), th=Math.atan2(p.y,p.x), x=R*Math.cos(th), y=-R*Math.sin(th);
+  plan.appendChild(mk("circle",{class:"ring",r:R.toFixed(1)}));
+  const dot=mk("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:b[0]==="Earth"?4:3.6,fill:b[1]});
+  const tl=mk("title",{}); tl.textContent=b[0]; dot.appendChild(tl);
+  plan.appendChild(dot);
+  if(b[0]==="Earth") plan.appendChild(mk("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:7.5,fill:"none",stroke:"#7fc7ff","stroke-width":1}));
+  /* label beside the dot, on the first side where it overlaps nothing
+     already placed and stays inside the frame; measured, not estimated */
+  const ux=Math.cos(th), uy=-Math.sin(th), g=b[0]==="Earth"?12:9;
+  const t=mk("text",{}); t.textContent=b[0]; plan.appendChild(t);
+  const put=(lx,ly)=>{const anchor=lx>x+2?"start":lx<x-2?"end":"middle";
+    t.setAttribute("x",lx.toFixed(1)); t.setAttribute("y",(ly+3.5).toFixed(1)); t.setAttribute("text-anchor",anchor);
+    const q=t.getBBox(); return [q.x-1,q.y-1,q.width+2,q.height+2];};
+  const clear=box=>!placed.some(q=>box[0]<q[0]+q[2]&&q[0]<box[0]+box[2]&&box[1]<q[1]+q[3]&&q[1]<box[1]+box[3])
+    && box[0]>-159&&box[0]+box[2]<159&&box[1]>-159&&box[1]+box[3]<159;
+  let box=null;
+  search: for(const d of [g,g+8,g+16]) for(let k=0;k<8;k++){
+    const an=Math.atan2(uy,ux)+[0,1,-1,2,-2,3,-3,4][k]*Math.PI/4;
+    const c=put(x+Math.cos(an)*d,y+Math.sin(an)*d);
+    if(clear(c)){box=c;break search;}
+  }
+  if(!box){                                         /* crowded: keep inside the frame at least */
+    const inside=c=>c[0]>-159&&c[0]+c[2]<159&&c[1]>-159&&c[1]+c[3]<159;
+    for(let k=0;k<8&&!box;k++){const an=Math.atan2(uy,ux)+[0,1,-1,2,-2,3,-3,4][k]*Math.PI/4;
+      const c=put(x+Math.cos(an)*g,y+Math.sin(an)*g); if(inside(c)) box=c;}
+  }
+  placed.push(box);
+  /* the dots themselves are obstacles for later labels */
+});
+})();
+</script>
 </body>
 </html>
